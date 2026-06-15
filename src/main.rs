@@ -38,29 +38,22 @@ fn main() {
         let first_input: &String = split_input.first().unwrap();
         let first_input = first_input.clone().to_lowercase();
 
-        //Test ok, first word is lowercased...
-        //println!("The first input is {}", first_input);
-
         match first_input.as_str() {
             "add" => {
-                add_employee(&split_input);
+                add_employee(&split_input, &mut depts);
             }
             "list" => {
-                list_by_dept(&split_input);
+                list_by_dept(&split_input, &depts);
             }
             "exit" => break,
             _ => {
                 println!("Invalid input, please try again.");
             }
         }
-
-        println!("The word count is {}", split_input.len());
     }
 }
 
-fn add_employee(split_input: &[String]) {
-    println!("Remaining words: ");
-
+fn add_employee(split_input: &[String], depts: &mut HashMap<String, Vec<String>>) {
     let mut employee = String::new();
     let mut dept = String::new();
     let mut is_valid = true;
@@ -104,13 +97,23 @@ fn add_employee(split_input: &[String]) {
         return;
     }
 
-    println!(
-        "Found employee {} that should be added to {}",
-        employee, dept
-    );
+    depts.entry(dept.clone()).or_default().push(employee);
+    depts.entry(dept).or_default().sort();
 }
 
-fn list_by_dept(split_input: &[String]) {
-    println!("TODO: list employees by department...");
-    println!("=======================");
+fn list_by_dept(split_input: &[String], depts: &HashMap<String, Vec<String>>) {
+    let dept = split_input[1..].join(" ");
+    let dept = String::from(dept.trim());
+
+    if dept.is_empty() {
+        println!("Invalid input, you must typue a department name.");
+        return;
+    }
+
+    if let Some(employees) = depts.get(&dept) {
+        println!("These are the employees that work on {}:", dept);
+        for e in employees {
+            println!("{}", e);
+        }
+    }
 }
