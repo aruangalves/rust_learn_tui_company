@@ -7,11 +7,7 @@ fn main() {
     let mut user_input = String::new();
 
     loop {
-        println!("Type an option: add employee | list department | exit");
-        println!("Usage: ");
-        println!("  Add John Doe to Engineering");
-        println!("  List Engineering");
-        println!("  Exit");
+        println!("Type an option: add employee | list department | help | exit");
 
         io::stdout().flush().expect("Failed to flush");
 
@@ -44,6 +40,12 @@ fn main() {
             }
             "list" => {
                 list_by_dept(&split_input, &depts);
+            }
+            "help" => {
+                println!("Usage: ");
+                println!("  Add John Doe to Engineering");
+                println!("  List Engineering");
+                println!("  Exit");
             }
             "exit" => break,
             _ => {
