@@ -21,7 +21,10 @@ fn main() {
             .expect("Failed to read line");
 
         //splitting user input into a Vector
-        let split_input: Vec<String> = user_input.split(' ').map(|s| s.to_string()).collect();
+        let split_input: Vec<String> = user_input
+            .split_whitespace()
+            .map(|s| s.to_string())
+            .collect();
 
         //guarantees that somehow the input wasn't empty
         //so I can safely retrive the first element
@@ -38,10 +41,10 @@ fn main() {
 
         match first_input.as_str() {
             "add" => {
-                println!("TODO: add new employee to hashmap...");
+                add_employee(&split_input);
             }
             "list" => {
-                println!("TODO: list employees by department...");
+                list_by_dept();
             }
             "exit" => break,
             _ => {
@@ -50,9 +53,18 @@ fn main() {
         }
 
         println!("The word count is {}", split_input.len());
-
-        for s in &split_input {
-            println!("{}", s);
-        }
     }
+}
+
+fn add_employee(split_input: &[String]) {
+    println!("Remaining words: ");
+    for s in split_input.iter().skip(1) {
+        println!("{}", s);
+    }
+    println!("=======================");
+}
+
+fn list_by_dept() {
+    println!("TODO: list employees by department...");
+    println!("=======================");
 }
