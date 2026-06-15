@@ -7,7 +7,7 @@ fn main() {
     let mut user_input = String::new();
 
     loop {
-        println!("Type an option: add employee | list department | help | exit");
+        println!("Type an option: add employee to dept | list department | help | exit");
 
         io::stdout().flush().expect("Failed to flush");
 
@@ -108,7 +108,7 @@ fn list_by_dept(split_input: &[String], depts: &HashMap<String, Vec<String>>) {
     let dept = String::from(dept.trim());
 
     if dept.is_empty() {
-        println!("Invalid input, you must typue a department name.");
+        println!("Invalid input, you must type a department name.");
         return;
     }
 
@@ -117,5 +117,8 @@ fn list_by_dept(split_input: &[String], depts: &HashMap<String, Vec<String>>) {
         for e in employees {
             println!("{}", e);
         }
+        return;
     }
+
+    println!("The department '{}' doesn't exist, try again.", dept);
 }
