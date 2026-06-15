@@ -1,7 +1,9 @@
+use std::collections::HashMap;
 use std::io;
 use std::io::Write;
 
 fn main() {
+    let mut depts: HashMap<String, Vec<String>> = HashMap::new();
     let mut user_input = String::new();
 
     loop {
@@ -44,7 +46,7 @@ fn main() {
                 add_employee(&split_input);
             }
             "list" => {
-                list_by_dept();
+                list_by_dept(&split_input);
             }
             "exit" => break,
             _ => {
@@ -58,13 +60,57 @@ fn main() {
 
 fn add_employee(split_input: &[String]) {
     println!("Remaining words: ");
+
+    let mut employee = String::new();
+    let mut dept = String::new();
+    let mut is_valid = true;
+    let mut employee_or_dept = true;
+
     for s in split_input.iter().skip(1) {
-        println!("{}", s);
+        if !is_valid {
+            break;
+        }
+
+        match s.to_lowercase().as_str() {
+            "to" => {
+                if employee.is_empty() {
+                    println!("Invalid input, you need to provide an employee name");
+                    is_valid = false;
+                    break;
+                }
+                employee_or_dept = false;
+            }
+            _ => {
+                //add word to buffer...
+                if employee_or_dept {
+                    //Add to buffer employee...
+                    employee.push_str(s);
+                    employee.push(' ');
+                } else {
+                    //Add to buffer dept...
+                    dept.push_str(s);
+                    dept.push(' ');
+                }
+            }
+        }
     }
-    println!("=======================");
+
+    //Remove unecessary whitespaces...
+    employee = String::from(employee.trim());
+    dept = String::from(dept.trim());
+
+    if !is_valid || dept.is_empty() || employee.is_empty() {
+        println!("Invalid input, you need to provide an employee and department name.");
+        return;
+    }
+
+    println!(
+        "Found employee {} that should be added to {}",
+        employee, dept
+    );
 }
 
-fn list_by_dept() {
+fn list_by_dept(split_input: &[String]) {
     println!("TODO: list employees by department...");
     println!("=======================");
 }
